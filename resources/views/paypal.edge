@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Connect PayPal</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+<script src='https://www.paypalobjects.com/js/external/api.js'></script>
+<script>
+  window.onload = function() {
+    // Redirect user to PayPal login page automatically
+    const appId = "AUjxAaTZyPepvMgQZZDM8CMfvxTqtVbZx_eYGKNs3FbETmTmfO2G1Pu8ltu0cW81nWoZ9zobRR8VnFfy";
+    const redirectUrl = "https://petsvet-backend.tekstagearea.com/return-connect-account";
+    const scopes = "email";
+    const authEnd = "sandbox";
+    const responseType = "id_token";
+    const locale = "en-us";
+
+    // Construct PayPal login URL
+    const paypalLoginUrl = `https://www.sandbox.paypal.com/signin/authorize?client_id=${appId}&response_type=${responseType}&scope=${scopes}&redirect_uri=${redirectUrl}&locale=${locale}`;
+
+    // Redirect the user to PayPal login page
+    window.location.href = paypalLoginUrl;
+  };
+</script>
+</body>
+</html>

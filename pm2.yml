@@ -1,0 +1,6 @@
+apps:
+  - name: pets-vets
+    script: build/server.js
+  - name: scheduler
+    script: node
+    args: ace scheduler:run

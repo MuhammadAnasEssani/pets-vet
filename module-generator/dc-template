@@ -1,0 +1,14 @@
+import fs from 'fs'
+import {string} from '@ioc:Adonis/Core/Helpers'
+import * as os from "os";
+
+
+export default class DynamicContent{
+    const verified = false
+    constructor() {
+
+    }
+
+
+    '####!@#GUJK'
+}

@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_0900_ai_ci">serve-easy</database>
+</source>
+<canvas zoom="80">
+<tables>
+<table name="cart_item_modifiers" view="colnames">
+<left>1520</left>
+<top>10</top>
+<width>117</width>
+<height>149</height>
+<sql_create_table>CREATE TABLE `cart_item_modifiers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cart_item_id` int(10) unsigned NOT NULL,
+  `modifier_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cart_item_modifiers_cart_item_id_foreign` (`cart_item_id`),
+  KEY `cart_item_modifiers_modifier_id_foreign` (`modifier_id`),
+  CONSTRAINT `cart_item_modifiers_cart_item_id_foreign` FOREIGN KEY (`cart_item_id`) REFERENCES `cart_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `cart_item_modifiers_modifier_id_foreign` FOREIGN KEY (`modifier_id`) REFERENCES `modifiers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="cart_items" view="colnames">
+<left>1211</left>
+<top>0</top>
+<width>131</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `cart_items` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cart_id` int(10) unsigned NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
+  `qty` int(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cart_items_product_id_foreign` (`product_id`),
+  KEY `cart_items_cart_id_foreign` (`cart_id`),
+  CONSTRAINT `cart_items_cart_id_foreign` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `cart_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="carts" view="colnames">
+<left>858</left>
+<top>2</top>
+<width>119</width>
+<height>155</height>
+<sql_create_table>CREATE TABLE `carts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `table_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `carts_user_id_foreign` (`user_id`),
+  KEY `carts_table_id_foreign` (`table_id`),
+  CONSTRAINT `carts_table_id_foreign` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `carts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="categories" view="colnames">
+<left>781</left>
+<top>579</top>
+<width>113</width>
+<height>210</height>
+<sql_create_table>CREATE TABLE `categories` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `parent_sort` int(10) NOT NULL,
+  `description` text NOT NULL,
+  `status` int(10) NOT NULL,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  `created_by_id` int(10) unsigned NOT NULL,
+  `updated_by_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `categories_establishment_id_foreign` (`establishment_id`),
+  KEY `categories_created_by_id_foreign` (`created_by_id`),
+  KEY `categories_updated_by_id_foreign` (`updated_by_id`),
+  CONSTRAINT `categories_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `categories_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `categories_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="days" view="colnames">
+<left>1220</left>
+<top>694</top>
+<width>88</width>
+<height>129</height>
+<sql_create_table>CREATE TABLE `days` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="delivery_customers" view="colnames">
+<left>874</left>
+<top>401</top>
+<width>110</width>
+<height>135</height>
+<sql_create_table>CREATE TABLE `delivery_customers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `mobile_number` int(20) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `landmark` varchar(100) DEFAULT NULL,
+  `alternate_phone` int(20) DEFAULT NULL,
+  `address_type` varchar(20) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="discounts" view="colnames">
+<left>128</left>
+<top>421</top>
+<width>113</width>
+<height>218</height>
+<sql_create_table>CREATE TABLE `discounts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` text NOT NULL,
+  `status` int(11) NOT NULL,
+  `discount` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `created_by_id` int(10) unsigned NOT NULL,
+  `updated_by_id` int(10) unsigned DEFAULT NULL,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `discounts_establishment_id_foreign` (`establishment_id`),
+  KEY `discounts_created_by_id_foreign` (`created_by_id`),
+  KEY `discounts_updated_by_id_foreign` (`updated_by_id`),
+  CONSTRAINT `discounts_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `discounts_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `discounts_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="entity_timetables" view="colnames">
+<left>1558</left>
+<top>659</top>
+<width>92</width>
+<height>162</height>
+<sql_create_table>CREATE TABLE `entity_timetables` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `entity_id` int(10) unsigned NOT NULL,
+  `timetable_id` int(10) unsigned NOT NULL,
+  `entity_type` int(10) NOT NULL,
+  `status` int(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `entity_timetables_timetable_id_foreign` (`timetable_id`),
+  CONSTRAINT `entity_timetables_timetable_id_foreign` FOREIGN KEY (`timetable_id`) REFERENCES `time_tables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="establishments" view="colnames">
+<left>290</left>
+<top>727</top>
+<width>97</width>
+<height>105</height>
+<sql_create_table>CREATE TABLE `establishments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `status` int(10) NOT NULL,
+  `address` text NOT NULL,
+  `latitude` float(20,2) NOT NULL,
+  `longitude` float(20,2) NOT NULL,
+  `restaurant_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `establishments_restaurant_id_foreign` (`restaurant_id`),
+  CONSTRAINT `establishments_restaurant_id_foreign` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="modifier_classes" view="colnames">
+<left>1330</left>
+<top>242</top>
+<width>113</width>
+<height>103</height>
+<sql_create_table>CREATE TABLE `modifier_classes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `max_amount` int(10) NOT NULL,
+  `min_amount` int(10) NOT NULL,
+  `status` int(11) NOT NULL,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  `created_by_id` int(10) unsigned NOT NULL,
+  `updated_by_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `modifier_classes_establishment_id_foreign` (`establishment_id`),
+  KEY `modifier_classes_created_by_id_foreign` (`created_by_id`),
+  KEY `modifier_classes_updated_by_id_foreign` (`updated_by_id`),
+  CONSTRAINT `modifier_classes_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `modifier_classes_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `modifier_classes_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="modifier_products" view="colnames">
+<left>1365</left>
+<top>96</top>
+<width>102</width>
+<height>124</height>
+<sql_create_table>CREATE TABLE `modifier_products` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL,
+  `modifier_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `modifier_products_product_id_foreign` (`product_id`),
+  KEY `modifier_products_modifier_id_foreign` (`modifier_id`),
+  CONSTRAINT `modifier_products_modifier_id_foreign` FOREIGN KEY (`modifier_id`) REFERENCES `modifiers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `modifier_products_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="modifiers" view="colnames">
+<left>1507</left>
+<top>239</top>
+<width>116</width>
+<height>207</height>
+<sql_create_table>CREATE TABLE `modifiers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `price` int(10) NOT NULL,
+  `barcode` int(10) NOT NULL,
+  `cost` int(10) NOT NULL,
+  `status` int(11) NOT NULL,
+  `modifier_class_id` int(10) unsigned NOT NULL,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `modifiers_establishment_id_foreign` (`establishment_id`),
+  KEY `modifiers_modifier_class_id_foreign` (`modifier_class_id`),
+  CONSTRAINT `modifiers_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `modifiers_modifier_class_id_foreign` FOREIGN KEY (`modifier_class_id`) REFERENCES `modifier_classes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="modules" view="colnames">
+<left>2</left>
+<top>707</top>
+<width>114</width>
+<height>123</height>
+<sql_create_table>CREATE TABLE `modules` (
+  `id` int(10) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  UNIQUE KEY `modules_id_unique` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="order_item_modifiers" view="colnames">
+<left>1551</left>
+<top>468</top>
+<width>100</width>
+<height>136</height>
+<sql_create_table>CREATE TABLE `order_item_modifiers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `order_item_id` int(10) unsigned NOT NULL,
+  `modifier_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_item_modifiers_order_item_id_foreign` (`order_item_id`),
+  KEY `order_item_modifiers_modifier_id_foreign` (`modifier_id`),
+  CONSTRAINT `order_item_modifiers_modifier_id_foreign` FOREIGN KEY (`modifier_id`) REFERENCES `modifiers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_item_modifiers_order_item_id_foreign` FOREIGN KEY (`order_item_id`) REFERENCES `order_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="order_items" view="colnames">
+<left>1378</left>
+<top>438</top>
+<width>104</width>
+<height>165</height>
+<sql_create_table>CREATE TABLE `order_items` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL,
+  `payable_price` int(10) NOT NULL,
+  `purchased_qty` int(10) NOT NULL,
+  `order_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `order_items_product_id_foreign` (`product_id`),
+  KEY `order_items_order_id_foreign` (`order_id`),
+  CONSTRAINT `order_items_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `order_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="orders" view="colnames">
+<left>648</left>
+<top>246</top>
+<width>134</width>
+<height>289</height>
+<sql_create_table>CREATE TABLE `orders` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `table_id` int(10) unsigned DEFAULT NULL,
+  `employee_id` int(10) unsigned DEFAULT NULL,
+  `establishment_id` int(10) unsigned NOT NULL,
+  `user_address_id` int(10) unsigned DEFAULT NULL,
+  `type` int(11) NOT NULL,
+  `delivery_customer_id` int(10) unsigned DEFAULT NULL,
+  `rider_id` int(10) unsigned DEFAULT NULL,
+  `status` int(11) NOT NULL,
+  `payment_status` int(11) NOT NULL,
+  `payment_type` int(11) NOT NULL,
+  `promo_code_id` int(10) unsigned DEFAULT NULL,
+  `discount_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `orders_user_id_foreign` (`user_id`),
+  KEY `orders_table_id_foreign` (`table_id`),
+  KEY `orders_employee_id_foreign` (`employee_id`),
+  KEY `orders_establishment_id_foreign` (`establishment_id`),
+  KEY `orders_user_address_id_foreign` (`user_address_id`),
+  KEY `orders_delivery_customer_id_foreign` (`delivery_customer_id`),
+  KEY `orders_rider_id_foreign` (`rider_id`),
+  KEY `orders_promo_code_id_foreign` (`promo_code_id`),
+  KEY `orders_discount_id_foreign` (`discount_id`),
+  CONSTRAINT `orders_delivery_customer_id_foreign` FOREIGN KEY (`delivery_customer_id`) REFERENCES `delivery_customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_discount_id_foreign` FOREIGN KEY (`discount_id`) REFERENCES `discounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_employee_id_foreign` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_promo_code_id_foreign` FOREIGN KEY (`promo_code_id`) REFERENCES `promo_codes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_rider_id_foreign` FOREIGN KEY (`rider_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_table_id_foreign` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_user_address_id_foreign` FOREIGN KEY (`user_address_id`) REFERENCES `user_addresses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="products" view="colnames">
+<left>1074</left>
+<top>167</top>
+<width>113</width>
+<height>163</height>
+<sql_create_table>CREATE TABLE `products` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` text NOT NULL,
+  `sold_by_weight` tinyint(1) NOT NULL,
+  `barcode` int(10) NOT NULL,
+  `stock_amount` int(10) NOT NULL,
+  `cost` int(10) NOT NULL,
+  `is_shipping` tinyint(1) NOT NULL,
+  `price` int(10) NOT NULL,
+  `sku` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `category_id` int(10) unsigned NOT NULL,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  `created_by_id` int(10) unsigned NOT NULL,
+  `updated_by_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `products_category_id_foreign` (`category_id`),
+  KEY `products_establishment_id_foreign` (`establishment_id`),
+  KEY `products_created_by_id_foreign` (`created_by_id`),
+  KEY `products_updated_by_id_foreign` (`updated_by_id`),
+  CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `products_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `products_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `products_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="promo_codes" view="colnames">
+<left>398</left>
+<top>490</top>
+<width>124</width>
+<height>218</height>
+<sql_create_table>CREATE TABLE `promo_codes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) NOT NULL,
+  `status` int(11) NOT NULL,
+  `discount` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  `min_order_amount` int(11) NOT NULL,
+  `created_by_id` int(10) unsigned NOT NULL,
+  `updated_by_id` int(10) unsigned DEFAULT NULL,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `promo_codes_establishment_id_foreign` (`establishment_id`),
+  KEY `promo_codes_created_by_id_foreign` (`created_by_id`),
+  KEY `promo_codes_updated_by_id_foreign` (`updated_by_id`),
+  CONSTRAINT `promo_codes_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `promo_codes_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `promo_codes_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="restaurants" view="colnames">
+<left>121</left>
+<top>120</top>
+<width>88</width>
+<height>130</height>
+<sql_create_table>CREATE TABLE `restaurants` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `status` int(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="role_user" view="colnames">
+<left>134</left>
+<top>270</top>
+<width>114</width>
+<height>72</height>
+<sql_create_table>CREATE TABLE `role_user` (
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `role_id` int(10) unsigned DEFAULT NULL,
+  KEY `role_user_user_id_foreign` (`user_id`),
+  KEY `role_user_role_id_foreign` (`role_id`),
+  CONSTRAINT `role_user_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `role_user_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="roles" view="colnames">
+<left>-2</left>
+<top>265</top>
+<width>113</width>
+<height>160</height>
+<sql_create_table>CREATE TABLE `roles` (
+  `id` int(10) unsigned NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `display_name` varchar(255) DEFAULT NULL,
+  `description` text,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  UNIQUE KEY `roles_id_unique` (`id`),
+  KEY `roles_establishment_id_foreign` (`establishment_id`),
+  CONSTRAINT `roles_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="social_accounts" view="colnames">
+<left>131</left>
+<top>-2</top>
+<width>88</width>
+<height>92</height>
+<sql_create_table>CREATE TABLE `social_accounts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned NOT NULL,
+  `platform` varchar(25) DEFAULT NULL,
+  `client_id` varchar(200) DEFAULT NULL,
+  `expired_at` datetime DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `social_accounts_user_id_foreign` (`user_id`),
+  CONSTRAINT `social_accounts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="tables" view="colnames">
+<left>602</left>
+<top>23</top>
+<width>88</width>
+<height>110</height>
+<sql_create_table>CREATE TABLE `tables` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by_id` int(10) unsigned NOT NULL,
+  `updated_by_id` int(10) unsigned DEFAULT NULL,
+  `establishment_id` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tables_establishment_id_foreign` (`establishment_id`),
+  KEY `tables_created_by_id_foreign` (`created_by_id`),
+  KEY `tables_updated_by_id_foreign` (`updated_by_id`),
+  CONSTRAINT `tables_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tables_establishment_id_foreign` FOREIGN KEY (`establishment_id`) REFERENCES `establishments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tables_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="time_tables" view="colnames">
+<left>1367</left>
+<top>662</top>
+<width>106</width>
+<height>171</height>
+<sql_create_table>CREATE TABLE `time_tables` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `start_time` timestamp NOT NULL,
+  `end_time` timestamp NOT NULL,
+  `day_id` int(10) unsigned DEFAULT NULL,
+  `from_date` timestamp NOT NULL,
+  `status` int(10) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `time_tables_day_id_foreign` (`day_id`),
+  CONSTRAINT `time_tables_day_id_foreign` FOREIGN KEY (`day_id`) REFERENCES `days` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="transactions" view="colnames">
+<left>860</left>
+<top>181</top>
+<width>88</width>
+<height>116</height>
+<sql_create_table>CREATE TABLE `transactions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `order_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `transactions_order_id_foreign` (`order_id`),
+  CONSTRAINT `transactions_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="user_addresses" view="colnames">
+<left>428</left>
+<top>247</top>
+<width>102</width>
+<height>210</height>
+<sql_create_table>CREATE TABLE `user_addresses` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `zip_code` int(20) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `state` varchar(100) NOT NULL,
+  `landmark` varchar(100) DEFAULT NULL,
+  `alternate_phone` int(20) DEFAULT NULL,
+  `address_type` int(10) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_addresses_user_id_foreign` (`user_id`),
+  CONSTRAINT `user_addresses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="user_devices" view="colnames">
+<left>-3</left>
+<top>54</top>
+<width>113</width>
+<height>149</height>
+<sql_create_table>CREATE TABLE `user_devices` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(10) unsigned DEFAULT NULL,
+  `device_type` varchar(255) DEFAULT NULL,
+  `device_token` varchar(255) DEFAULT NULL,
+  `push_notification` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_devices_user_id_foreign` (`user_id`),
+  CONSTRAINT `user_devices_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="users" view="colnames">
+<left>270</left>
+<top>38</top>
+<width>114</width>
+<height>520</height>
+<sql_create_table>CREATE TABLE `users` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `full_name` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `restaurant_id` int(10) unsigned DEFAULT NULL,
+  `verification_code` varchar(10) DEFAULT NULL,
+  `is_verified` int(11) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `dob` date DEFAULT NULL,
+  `image` text,
+  `address` text,
+  `city` varchar(255) DEFAULT NULL,
+  `zip` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `latitude` varchar(255) DEFAULT NULL,
+  `is_completed` int(11) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL,
+  `social_platform` varchar(255) DEFAULT NULL,
+  `client_id` varchar(255) DEFAULT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `is_social_login` int(11) DEFAULT NULL,
+  `is_approved` int(11) DEFAULT NULL,
+  `last_login_at` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `company_name` varchar(255) DEFAULT NULL,
+  `business_type` varchar(255) DEFAULT NULL,
+  `push_notification` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`),
+  KEY `users_restaurant_id_foreign` (`restaurant_id`),
+  CONSTRAINT `users_restaurant_id_foreign` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="attachments" view="colnames">
+<left>1197</left>
+<top>503</top>
+<width>100</width>
+<height>187</height>
+<sql_create_table>CREATE TABLE `attachments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `path` varchar(255) DEFAULT NULL,
+  `instance_type` int(11) NOT NULL,
+  `instance_id` int(11) NOT NULL,
+  `mime_type` varchar(255) DEFAULT NULL,
+  `thumbnail` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `duration` decimal(8,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="constants" view="colnames">
+<left>957</left>
+<top>613</top>
+<width>88</width>
+<height>151</height>
+<sql_create_table>CREATE TABLE `constants` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `value` varchar(255) DEFAULT NULL,
+  `is_active` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="countries" view="colnames">
+<left>656</left>
+<top>715</top>
+<width>88</width>
+<height>126</height>
+<sql_create_table>CREATE TABLE `countries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `is_active` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="notifications" view="colnames">
+<left>1060</left>
+<top>596</top>
+<width>103</width>
+<height>196</height>
+<sql_create_table>CREATE TABLE `notifications` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `notifiable_id` int(10) unsigned DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text,
+  `ref_id` int(11) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `read_at` datetime DEFAULT NULL,
+  `extra` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="pages" view="colnames">
+<left>524</left>
+<top>730</top>
+<width>88</width>
+<height>158</height>
+<sql_create_table>CREATE TABLE `pages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `slug` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+<table name="role_permissions" view="colnames">
+<left>136</left>
+<top>644</top>
+<width>88</width>
+<height>198</height>
+<sql_create_table>CREATE TABLE `role_permissions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(10) unsigned NOT NULL,
+  `module_id` int(10) unsigned NOT NULL,
+  `create` tinyint(1) DEFAULT NULL,
+  `read` tinyint(1) DEFAULT NULL,
+  `update` tinyint(1) DEFAULT NULL,
+  `delete` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `role_permissions_role_id_foreign` (`role_id`),
+  KEY `role_permissions_module_id_foreign` (`module_id`),
+  CONSTRAINT `role_permissions_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `role_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

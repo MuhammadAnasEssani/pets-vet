@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "8041:4030"
+    depends_on:
+      - redis
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAX_RETRIES_PER_REQUEST: 30
+
+  redis:
+    image: redis:latest
+
+networks:
+  pets-vets:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.24.24.51/24

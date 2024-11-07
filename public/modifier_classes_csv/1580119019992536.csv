@@ -1,0 +1,4 @@
+modifier_class,min_amount,max_amount,multi_select,modifier,price,barcode,cost
+Test,100,1000,TRUE,modifier1,300,3333,250
+Test 2,50,100,FALSE,modifier2,400,4452,350
+Test 2,50,100,FALSE,modifier3,400,4452,350

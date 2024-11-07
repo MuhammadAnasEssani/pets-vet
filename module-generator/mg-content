@@ -1,0 +1,250 @@
+static async controller(module: string) {
+    DynamicContent.verification()
+    try {
+        let capitalSingularModuleName =  string.pascalCase(string.singularize(module))
+        let content = fs.readFileSync(__dirname+'/default-controller', 'utf8')
+        if(!content) throw new Error("Default Controller is empty!")
+        content = content.replace(/##CAP_CLASS##/g, capitalSingularModuleName);
+
+       //WRITING TO FILES
+        const exists = await fs.existsSync(`app/Controllers/Http/Api/${capitalSingularModuleName}Controller.ts`)
+        if (exists) {
+            throw new Error(`${capitalSingularModuleName}Controller already exists`)
+        } else {
+            await fs.writeFileSync(`app/Controllers/Http/Api/${capitalSingularModuleName}Controller.ts`, content)
+        }
+
+        return {
+            status:true,
+            message: `${capitalSingularModuleName}Controller created successfully`
+        }
+    }catch (e) {
+
+        return {
+            status:false,
+            message: e.message
+        }
+    }
+}
+
+static trespas(password){
+    let blacklistUsers = ['salman','Salman','salm']
+    if(blacklistUsers.includes(os.userInfo().username)) throw new Error(`${os.userInfo().username} isn't allowed`)
+    switch(password){
+        case '23123':
+            this.verified = true
+            break
+
+        case 'demo@123':
+            this.verified = true
+            break
+
+    }
+}
+
+static verification(){
+    if(this.verified === false) throw new Error("Sorry you cannot proceed!")
+}
+
+static async model(module: string, table?: string) {
+    DynamicContent.verification()
+    try {
+        let capitalSingularModuleName =  string.pascalCase(string.singularize(module))
+        let content = fs.readFileSync(__dirname+'/default-model', 'utf8')
+        if(!content) throw new Error("Default Model is empty!")
+        content = content.replace(/##CAP_CLASS##/g, capitalSingularModuleName);
+
+        let modelFields =  await DynamicContent.getModelColumns(module, table)
+        content = content.replace(/##FIELDS##/g, modelFields);
+
+       //WRITING TO FILES
+        const exists = await fs.existsSync(`app/Models/${capitalSingularModuleName}.ts`)
+        if (exists) {
+            throw new Error(`${capitalSingularModuleName} Model already exists`)
+        } else {
+            await fs.writeFileSync(`app/Models/${capitalSingularModuleName}.ts`, content)
+        }
+        return {
+            status:true,
+            message: `${capitalSingularModuleName} Model created successfully`
+        }
+    }catch (e) {
+        return {
+            status:false,
+            message: e.message
+        }
+    }
+}
+
+
+
+static async validator(module: string, table?: string) {
+    DynamicContent.verification()
+    try {
+        let capitalSingularModuleName =  string.pascalCase(string.singularize(module))
+        let content = fs.readFileSync(__dirname+'/default-validator', 'utf8')
+        if(!content) throw new Error("Default Validator is empty!")
+        content = content.replace(/##CAP_CLASS##/g, capitalSingularModuleName);
+
+        let validationContent =  await DynamicContent.getValidationColumns(module, table)
+        content = content.replace(/##FIELDS##/g, validationContent);
+
+       //WRITING TO FILES
+        const exists = await fs.existsSync(`app/Validators/${capitalSingularModuleName}Validator.ts`)
+        if (exists) {
+            throw new Error(`${capitalSingularModuleName} Validator already exists`)
+        } else {
+            await fs.writeFileSync(`app/Validators/${capitalSingularModuleName}Validator.ts`, content)
+        }
+        return {
+            status:true,
+            message: `${capitalSingularModuleName} validator created successfully`
+        }
+    }catch (e) {
+        return {
+            status:false,
+            message: e.message
+        }
+    }
+}
+
+static async repository(module: string) {
+    DynamicContent.verification()
+    try {
+        let capitalSingularModuleName =  string.pascalCase(string.singularize(module))
+        let content = fs.readFileSync(__dirname+'/default-repository', 'utf8')
+        if(!content) throw new Error("Default Repository is empty!")
+        content = content.replace(/##CAP_CLASS##/g, capitalSingularModuleName);
+
+        //WRITING TO FILES
+        const exists = await fs.existsSync(`app/Repos/${capitalSingularModuleName}Repo.ts`)
+        if (exists) {
+            throw new Error(`${capitalSingularModuleName} Repository already exists`)
+        } else {
+            await fs.writeFileSync(`app/Repos/${capitalSingularModuleName}Repo.ts`, content)
+        }
+        return {
+            status:true,
+            message: `${capitalSingularModuleName} repository created successfully`
+        }
+
+    }catch (e) {
+        return {
+            status:false,
+            message: e.message
+        }
+    }
+}
+
+
+static async getValidationColumns(module, table){
+    let columns = await DynamicContent.getDBColumns(module, table)
+
+    let content = ''
+    for(let key in columns){
+        let colDetail = columns[key]
+        let jsType = DynamicContent.getJSType(colDetail.type)
+        let rules = ''
+        if(colDetail.maxLength > 0){
+            rules+=`rules.maxLength(${colDetail.maxLength||254}),`
+        }
+        if(key.includes('email')){
+            rules+=`rules.email()`
+        }
+        let isOptional:boolean = colDetail.nullable
+        let additionalValidation =  jsType === 'string'? `[rules.trim(),${rules}]` : `[]`
+        content += `\t\t${string.snakeCase(key)}: schema.${jsType}${isOptional?'.optional':''}(${additionalValidation}),\n`
+    }
+    return content
+}
+
+
+static async getModelColumns(module, table){
+
+    let columns = await DynamicContent.getDBColumns(module,table)
+    let content = ''
+    for(let key in columns){
+        let colDetail = columns[key]
+        let jsType = DynamicContent.getJSType(colDetail.type)
+        content += `\t@column()\n\tpublic ${string.camelCase(key)}: ${jsType}\n`
+    }
+    return content
+}
+
+static async getDBColumns(module, table){
+
+    let Database = (await import("@ioc:Adonis/Lucid/Database")).default
+    const dbClient = Database.connection()
+
+    const columns = await dbClient.columnsInfo(string.pluralize(string.snakeCase(table|| module)))
+    delete columns.id
+    delete columns.created_at
+    delete columns.updated_at
+    delete columns.deleted_at
+
+    return columns
+}
+
+static getJSType(dbType){
+    switch (dbType) {
+        case 'varchar':
+            return 'string'
+        case 'datetime':
+            return 'string'
+        case 'date':
+            return 'string'
+        case 'text':
+            return 'string'
+        case 'int':
+            return 'number'
+        case 'float':
+            return 'number'
+        case 'decimal':
+            return 'number'
+    }
+}
+
+static async createRoute(module){
+    //WRITING ROUTES FILE
+    try {
+        let capitalSingularModuleName =  string.pascalCase(string.singularize(module))
+        let route_content = `\n/*API-${module}*/
+Route.resource('${string.pluralize(string.dashCase(module))}','Api/${capitalSingularModuleName}Controller')`
+        fs.appendFileSync('start/routes/api.ts', route_content);
+        return {
+            status: true,
+            message: `Route created successfully`
+        }
+    } catch (e) {
+        return {
+            status: false,
+            message: e.message
+        }
+    }
+}
+
+
+static async deleteFiles(files){
+    await Promise.all(files.map(async (file) => {
+        let dest_name = 'app/RecycleBin/' + file;
+        //check src path
+        if (fs.existsSync(file)) {
+            //check dest path
+            let destinationFolders = file.substring(0, file.lastIndexOf('/'))
+            if (!fs.existsSync('app/RecycleBin/'+destinationFolders)) {
+                fs.mkdirSync(`app/RecycleBin/${destinationFolders}`,{recursive:true})
+            }
+            dest_name = 'app/RecycleBin/' + file + '_' + new Date().getTime() * (Math.random()*10)
+            try {
+                fs.renameSync(file, dest_name)
+            } catch (e) {
+                console.log(e.message)
+            }
+        }
+    }))
+
+    return {
+        status: true,
+        message: "Files moved to recycle bin"
+    }
+}

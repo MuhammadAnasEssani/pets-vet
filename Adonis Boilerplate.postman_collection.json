@@ -1,0 +1,601 @@
+{
+	"info": {
+		"_postman_id": "a1cd8f58-bb0b-4540-9cf9-ee645eb55bf9",
+		"name": "Adonis Boilerplate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user@boilerplate.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "user123",
+									"type": "text"
+								},
+								{
+									"key": "device_type",
+									"value": "ios",
+									"type": "text"
+								},
+								{
+									"key": "device_token",
+									"value": "ABC123",
+									"type": "text"
+								},
+								{
+									"key": "role_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Test User",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "user123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}register",
+							"host": [
+								"{{baseUrl}}register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user@yopmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "user123",
+									"type": "text"
+								},
+								{
+									"key": "role_id",
+									"value": "2",
+									"description": "Admin = 1, User = 2",
+									"type": "text"
+								},
+								{
+									"key": "device_type",
+									"value": "ios",
+									"description": "ios,android,web",
+									"type": "text"
+								},
+								{
+									"key": "device_token",
+									"value": "ABC123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}login",
+							"host": [
+								"{{baseUrl}}login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot-password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user@yopmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}forgot-password",
+							"host": [
+								"{{baseUrl}}forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resend-otp",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user@yopmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}resend-otp",
+							"host": [
+								"{{baseUrl}}resend-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verify-otp",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user@yopmail.com",
+									"type": "text"
+								},
+								{
+									"key": "otp_code",
+									"value": "8804",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}verify-otp",
+							"host": [
+								"{{baseUrl}}verify-otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset-password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "user@yopmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "user123",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "user123",
+									"type": "text"
+								},
+								{
+									"key": "otp_code",
+									"value": "8804",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}reset-password",
+							"host": [
+								"{{baseUrl}}reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change-password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Y2t3bTkwOGRoMDAwMGMwdmU0bXlpZzlsYQ.xLXUg9P7IbQoyXxsHiWqxHCysvGQza09L6c3_VBTj7Qlcwn1l7E4H8NdjJe9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "current_password",
+									"value": "user123",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "user123",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "user123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}change-password",
+							"host": [
+								"{{baseUrl}}change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Y2t3bTkwOGRoMDAwMGMwdmU0bXlpZzlsYQ.xLXUg9P7IbQoyXxsHiWqxHCysvGQza09L6c3_VBTj7Qlcwn1l7E4H8NdjJe9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}me",
+							"host": [
+								"{{baseUrl}}me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "social-login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "social-user@yopmail.com",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "platform",
+									"value": "google",
+									"type": "text"
+								},
+								{
+									"key": "device_type",
+									"value": "ios",
+									"type": "text"
+								},
+								{
+									"key": "device_token",
+									"value": "ABC123",
+									"type": "text"
+								},
+								{
+									"key": "role_id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Social User",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}social-login",
+							"host": [
+								"{{baseUrl}}social-login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pages",
+			"item": [
+				{
+					"name": "get all pages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}pages",
+							"host": [
+								"{{baseUrl}}pages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get page by slug",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}page-by-slug/about-us",
+							"host": [
+								"{{baseUrl}}page-by-slug"
+							],
+							"path": [
+								"about-us"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "get notifications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Y2t3bTkwOGRoMDAwMGMwdmU0bXlpZzlsYQ.xLXUg9P7IbQoyXxsHiWqxHCysvGQza09L6c3_VBTj7Qlcwn1l7E4H8NdjJe9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}notifications",
+							"host": [
+								"{{baseUrl}}notifications"
+							],
+							"query": [
+								{
+									"key": "unread",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "read",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mark read",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Y2t3bTkwOGRoMDAwMGMwdmU0bXlpZzlsYQ.xLXUg9P7IbQoyXxsHiWqxHCysvGQza09L6c3_VBTj7Qlcwn1l7E4H8NdjJe9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}mark-read/1",
+							"host": [
+								"{{baseUrl}}mark-read"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "mark-all-read",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Y2t3bTkwOGRoMDAwMGMwdmU0bXlpZzlsYQ.xLXUg9P7IbQoyXxsHiWqxHCysvGQza09L6c3_VBTj7Qlcwn1l7E4H8NdjJe9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}mark-all-read",
+							"host": [
+								"{{baseUrl}}mark-all-read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get unread count",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "Y2t3bTkwOGRoMDAwMGMwdmU0bXlpZzlsYQ.xLXUg9P7IbQoyXxsHiWqxHCysvGQza09L6c3_VBTj7Qlcwn1l7E4H8NdjJe9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}get-unread-count",
+							"host": [
+								"{{baseUrl}}get-unread-count"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "get settings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}settings",
+							"host": [
+								"{{baseUrl}}settings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

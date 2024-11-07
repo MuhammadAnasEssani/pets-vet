@@ -1,0 +1,10 @@
+module.exports = {
+  apps: [
+    {
+      name: 'project-name',
+      script: './server.ts',
+      exec_mode: 'fork',
+      autorestart: true
+    },
+  ],
+}

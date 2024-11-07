@@ -1,0 +1,4 @@
+name,barcode,category,sub_category,price,sku,stock_amount,classes,description,modifiers,media,is_shipping,sold_by_weight,status,printers,cost
+alpha product,23432,Test1,sub test 1,350,2343,500,"Chicken,Mutton",Product Description,"modifier1,modifier2,modifier3",,TRUE,TRUE,10,Test,200
+beta product,23432,Test2,sub test 2,350,2343,500,,Product Description,,,TRUE,TRUE,10,Test,200
+gamma product,23432,Test3,sub test 3,350,2343,500,Mutton,Product Description,"modifier1,modifier2,modifier3",,TRUE,TRUE,10,Test,200
